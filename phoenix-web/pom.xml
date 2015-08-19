@@ -8,13 +8,13 @@
 	  	<groupId>com.phoenix</groupId>
 	  	<version>0.0.1-SNAPSHOT</version>
 	</parent>
-  	<artifactId>phoenix-lucene</artifactId>
-  	<name>phoenix-lucene</name>
+  	<artifactId>phoenix-web</artifactId>
+  	<name>phoenix-web</name>
+  	<packaging>war</packaging>
   	<url>http://maven.apache.org</url>
   	
   	<properties>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    	<lucene-version>4.10.3</lucene-version>
   	</properties>
   	
   	<dependencies>
@@ -23,40 +23,11 @@
       		<artifactId>junit</artifactId>
       		<scope>test</scope>
     	</dependency>
-		
-		<dependency>
-			<groupId>com.phoenix</groupId>
-			<artifactId>phoenix-base</artifactId>
-			<version>${project.version}</version>
-		</dependency>		
-		
-		<!-- Lucene -->
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-core</artifactId>
-			<version>${lucene-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-highlighter</artifactId>
-			<version>${lucene-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-queryparser</artifactId>
-			<version>${lucene-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-analyzers-common</artifactId>
-			<version>${lucene-version}</version>
-		</dependency>
-		
-		<!-- <dependency>
-			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-core</artifactId>
-			<version>4.10.3</version>
-		</dependency> -->
+  		<dependency>
+  			<groupId>com.phoenix</groupId>
+  			<artifactId>phoenix-lucene</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
 		
   	</dependencies>
   	<build>
@@ -103,7 +74,22 @@
 					</execution>
 				</executions>
 			</plugin>
+			
+			<!-- tomcat插件 -->
+			<plugin>
+			    <groupId>org.apache.tomcat.maven</groupId>
+			    <artifactId>tomcat7-maven-plugin</artifactId>
+			    <version>2.2</version>
+			    <configuration>
+			        <port>8888</port>
+			        <path>/phoenix-web</path>
+			        <uriEncoding>UTF-8</uriEncoding>
+			        <!-- 监控web.xml文件 -->
+			        <contextFile>${basedir}/src/main/webapp/WEB-INF/web.xml</contextFile>
+			        <useTestClasspath>false</useTestClasspath>
+			    </configuration>
+			</plugin>
 		</plugins>
-	    <finalName>phoenix-lucene</finalName>
+	    <finalName>phoenix-web</finalName>
 	</build>
 </project>

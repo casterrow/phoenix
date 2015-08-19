@@ -12,6 +12,8 @@
   	
   	<modules>
     	<module>phoenix-lucene</module>
+    	<module>phoenix-web</module>
+    	<module>phoenix-base</module>
   	</modules>
 
 	<properties>

@@ -1,0 +1,22 @@
+<!DOCTYPE jboss-web PUBLIC
+   "-//JBoss//DTD Web Application 5.0//EN"
+   "http://www.jboss.org/j2ee/dtd/jboss-web_5_0.dtd">
+   
+<jboss-web>
+   <!-- Uncomment the security-domain to enable security. You will
+      need to edit the htmladaptor login configuration to setup the
+      login modules used to authentication users.
+      <security-domain>java:/jaas/jmx-console</security-domain>
+   -->
+	
+	<!-- 
+		jboss环境使用
+			java:/jdbc/umc，为jboss配置文件JNDI名称
+			jboss数据源的名称为java:jboss/数据库JNDI名称，或者java:/数据库JNDI名称
+	-->
+	<resource-ref>
+		<res-ref-name>jdbc/umc</res-ref-name>
+		<jndi-name>java:/jdbc/umc</jndi-name>
+	</resource-ref>
+
+</jboss-web>
