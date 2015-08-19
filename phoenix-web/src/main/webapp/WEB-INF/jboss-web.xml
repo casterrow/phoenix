@@ -11,12 +11,12 @@
 	
 	<!-- 
 		jboss环境使用
-			java:/jdbc/umc，为jboss配置文件JNDI名称
+			java:/jdbc/search，为jboss配置文件JNDI名称
 			jboss数据源的名称为java:jboss/数据库JNDI名称，或者java:/数据库JNDI名称
 	-->
 	<resource-ref>
-		<res-ref-name>jdbc/umc</res-ref-name>
-		<jndi-name>java:/jdbc/umc</jndi-name>
+		<res-ref-name>jdbc/search</res-ref-name>
+		<jndi-name>java:/jdbc/search</jndi-name>
 	</resource-ref>
 
 </jboss-web>

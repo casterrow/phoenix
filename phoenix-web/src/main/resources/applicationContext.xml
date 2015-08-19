@@ -3,7 +3,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx" 
-	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:jaxws="http://cxf.apache.org/jaxws"
 	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
@@ -11,11 +10,12 @@
 		"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
 		http://cxf.apache.org/jaxrs	http://cxf.apache.org/schemas/jaxrs.xsd
 		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 	
+	
+	<context:component-scan base-package="com.phoenix" />
 	
 	<context:property-placeholder location="classpath:jdbc.properties" />
 	
@@ -48,6 +48,31 @@
 		<property name="configLocation" value="classpath:mybatis.xml" />
 		<property name="dataSource" ref="dataSource" />
 	</bean> -->
+	
+	<!-- 
+		Date: Jul 10, 2015
+		数据源 JNDI方式 ，为了方便在Tomcat和JBoss中都能使用，建议是用JNDI的方式配置数据源。
+		Tomcat读取JNDI数据源语法：java:comp/env/数据库JNDI名称，或者直接数据库JNDI名称
+		JBoss读取JNDI数据源语法：java:jboss/数据库JNDI名称，或者java:/数据库JNDI名称
+		在数据源里配置<property name="resourceRef" value="true" />，表示读取数据源配置
+		Tomcat读取的是context.xml文件里配置的数据源
+		JBoss读取的是jboss-web.xml文件里配置的数据源
+	-->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>jdbc/search</value>
+		</property>
+		<property name="resourceRef" value="true" />
+	</bean>
+	
+	<!-- 数据连接管理 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	
+	<!-- 事务注解支持-->
+	<tx:annotation-driven transaction-manager="transactionManager" />
 	
 	
 </beans>

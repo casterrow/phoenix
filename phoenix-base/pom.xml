@@ -137,20 +137,16 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
   	</dependencies>
   	<build>
 		<resources>
 	  		<resource>
-	  			<directory>src/main/java</directory>
-	  			<includes>
-	  				<include>**/*.xml</include>
-	  			</includes>
-	  		</resource>
-	  		<resource>
 	  			<directory>src/main/resources</directory>
-	  			<includes>
-	  				<include>**/*.*</include>
-	  			</includes>
 	  		</resource>
 	  	</resources>
 	  	<plugins>
