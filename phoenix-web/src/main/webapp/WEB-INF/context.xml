@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!-- tomcat环境使用 -->
+<Context>
+	<!-- 开发使用 -->	
+	<Resource name="jdbc/search" auth="Container" type="javax.sql.DataSource"
+		username="umcuser" password="umcuser" driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/umcdb" maxActive="2" maxIdle="2" />
+		
+</Context>
