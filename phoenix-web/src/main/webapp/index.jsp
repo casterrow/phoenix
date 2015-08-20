@@ -17,7 +17,9 @@
 		<script type="text/javascript" charset="UTF-8" src="script/search.js"></script>
 	</head>
 	<body>
-		<h2>搜索</h2>
+		<input id="search" type="text" name="keywords" />
+		<input id="click" type="button" value="搜索" />
+		
 		
 	</body>
 </html>

@@ -41,7 +41,6 @@
 	  			<includes>
 	  				<include>**/*.*</include>
 	  			</includes>
-	  			<targetPath>${project.build.directory}/webapp</targetPath>
 	  		</resource>
 	  	</resources>
 	  	<plugins>
@@ -92,28 +91,4 @@
 	    <finalName>phoenix-web</finalName>
 	</build>
 	
-	<profiles>
-		<!-- 默认不指定参数是开发环境 -->
-		<profile>
-			<id>dev</id>
-			<activation>true</activation>
-			<plugins>
-				<plugin>
-					<artifactId>maven-war-plugin</artifactId>
-					<configuration>
-						<webResources>
-							<resource>
-								<directory>src/main/webapp</directory>
-								<includes>
-									<include>WEB-INF/web.xml</include>
-									<include>WEB-INF/context.xml</include>
-								</includes>
-								<filtering>true</filtering>
-							</resource>
-						</webResources>
-					</configuration>
-				</plugin>
-			</plugins>
-		</profile>
-	</profiles>
 </project>
