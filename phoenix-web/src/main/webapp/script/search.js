@@ -7,7 +7,7 @@ $(function() {
 	});
 	
 	
-	//监听文本框回车事件
+	//监听文本框回车事件，和点击搜索的功能完全一样
 	$("#search").keyup(function() {
 		alert("欢迎搜索!");
 	});
@@ -20,7 +20,7 @@ $(function() {
 			alert("亲，您输入的内容为空哟！");
 			return;
 		}
-		$.ajax({
+		$.ajax({ //去服务端取数据
 			method : POST
 		});
 		
