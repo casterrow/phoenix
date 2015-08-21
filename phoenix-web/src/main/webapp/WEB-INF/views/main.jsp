@@ -13,7 +13,7 @@
 <html>
 	<head>
 		<title>欢迎登陆主页面</title>
-		<script type="text/javascript" charset="UTF-8" src="${ctx}/script/jquery-1.9.0.js"></script>
+		<script type="text/javascript" charset="UTF-8" src="${ctx}/script/jquery-1.11.0.js"></script>
 		<script type="text/javascript" charset="UTF-8" src="${ctx}/script/search.js"></script>
 	</head>
 	<body>

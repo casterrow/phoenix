@@ -1,0 +1,86 @@
+==============================================================
+				  Author: Stephen Lau
+				  Email: casterrow@163.com
+				  Date: 2015年8月21日
+==============================================================
+
+Lucene API
+
+Document（文档），Lucene把索引的文件抽象成文档，文档是包含一个或者多个域的容器。
+Field（域），真正包含被搜索的内容，一些项的序列。
+Term（项），一个字串。
+Directory（目录），存放索引文件或者要被索引文件的目录
+	FSDirectory，把索引文件写在硬盘上，主要有三种实现：
+		MMapDirectory
+		NIOFSDirectory
+		SimpleFSDirectory
+	RAMDirectory，把索引文件写在内存中
+	
+Analyzer（分析器）
+
+
+IndexWriterConfig
+IndexWriter，调用函数addDocument将索引写到索引文件夹中
+Index，在Lucene 4.x中已经过时
+	Index.ANALYZED， 	使用分析器将域值分解成独立的语汇单元流，并使每个语汇单元都能被搜索，适用于普通文本域
+	Index.NOT_ANALYZED，对域进行索引，但不对String进行分析，将域值作为单一的语汇单元，适用于索引那些不能被分解的域值，
+	     如URL，文件路径，电话号码等
+	Index.ANALYZED_NO_NORMS，不会在索引中存储norms信息，norms记录了索引中的index-time boost信息，当你进行搜索时比较费内存
+	Index.NOT_ANALYZED_NO_NORMS，不存储norms信息，在搜索时减少索引空间和内存耗费
+	Index.No，使对应的域值不被搜索
+
+Store，在Lucene 4.x中已经过时
+	Stroe.YES，存储域值，该情况下原始字符串全部被保存在索引中，对需要展示搜索结果的域有用，如URL，标题
+	Stroe.NO，不存储域值，通常跟Index.ANALYZED共同用来索引大的文本域值，不用恢复为初始格式
+
+FieldType（域类型），在Lucene 4.x中使用
+
+IndexReader，将磁盘上的索引信息读入到内存
+IndexSearcher，调用search对查询语法树Query进行搜索， 得到结果TopScoreDocCollector
+QueryParser（查询解析器），调用parser方法进行语法分析，形成查询语法树，放到Query中
+Query
+TopDocs
+ScoreDoc
+
+
+Similarity，模块主要负责对相关性打分的实现
+Analysis，模块主要负责词法分析及语言处理而形成Term
+
+
+Lucene索引文件：
+	Lucene index的文件结构中有关段的文件有三种，分别是segments.gen, segments_N和.si文件。
+	segments.gen，保存着index当前活动段的版本号（即segments_N中的N）segments.gen文件中存储着header 信息 ，
+	     一个32位整型的版本号和一个64位整型的版本号。
+	segments_N，在索引中可能会包含一个或多个segments_N文件。然而，最大一代的那个文件是活动的segment文件（这时更旧的segments_N文件依
+	     然存在是因为它们暂时还不能被删除，或者，一个writer正在处理提交请求，或者一个用户定义的IndexDeletionPolicy正被使用）。
+	     这个文件按照名称列举每一个段的信息 如删除操作的版本号
+	.si，存储着有关段的元数据。
+	write.lock，
+	
+
+
+
+
+Lucene 4.x和Lucene 3.x的差别
+
+1、在索引域和norms发生变化
+Lucene 3.x创建Field并控制域索引及域存储代码示例：
+	new Field("id",ids[i],Field.Store.YES,Field.Index.NOT_ANALYZED_NO_NORMS)
+
+Lucene 4.x创建Field并控制域索引及域存储代码示例：
+1)创建Field的子类，使用Field的子类的默认特性控制，下面是Field的子类及对应特性
+    StringField：不分词、被索引。即对应Field.Index.NOT_ANALYZED，适用于原子型内容，如id、url等
+    TextField：分词、被索引。即对应Filed.Index.ANALYZED
+    StoredField：不被索引，当然也不被分词。即对应Field.Index.NO
+用新的构造方法new StringField("id",ids[i],Field.Store.YES)来完成功能。但是这种方式明显不够灵活
+2)使用构造方法new Field("id", string, fieldtype)。这里需要先创建fieldtype对象，并使用其本身方法控制索引域和存储域。示例代码如下
+    FieldType fieldtype = new FieldType();
+    fieldtype.setStored(true);
+    fieldtype.setOmitNorms(true);
+    fieldtype.setIndexed(true);
+    fieldtype.setTokenized(true);
+    
+2、创建IndexReader的方式
+Lucene 4.x通过DirectoryReader.open(directory)来创建IndexReader
+Lucene 3.x通过IndexReader.open(directory)来创建IndexReader
+
