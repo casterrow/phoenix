@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+<mycat:schema xmlns:mycat="http://org.opencloudb/">
+
+	<!-- 定义逻辑库 -->
+	<schema name="TESTDB" checkSQLschema="false" sqlMaxLimit="100">
+		<!-- auto sharding by id (long) -->
+		
+		<!-- 
+			table，要分片的表
+			name，表名称
+		    dataNode，分片节点
+		    rule，分片规则 
+		-->
+		<table name="employee" dataNode="pandoraNode,nuratorNode" rule="auto-sharding-long" />
+
+		<!-- global table is auto cloned to all defined data nodes ,so can join 
+			with any table whose sharding node is in the same data node -->
+		<!-- 全局表，一般是字典表，很少变动，数据量也不大，冗余机制 -->
+		<table name="salary" primaryKey="id" type="global" dataNode="pandoraNode,nuratorNode" />
+	</schema>
+		
+	<!-- dataNode，分片节点，一个分片对应一个dataNode -->
+	<dataNode name="pandoraNode" dataHost="pandoraHost" database="phoenix" />
+	<dataNode name="nuratorNode" dataHost="nuratorHost" database="phoenix" />
+	
+	<!-- dataHost，节点主机
+	     balance="1"，所有读操作都发到readHost
+	     writeType="0"，所有写操作都发到当前可用的writeHost-->
+	<dataHost name="pandoraHost" maxCon="1000" minCon="10" balance="1"
+		writeType="0" dbType="mysql" dbDriver="native" switchType="1" slaveThreshold="100">
+		
+		<heartbeat>select user()</heartbeat>
+		
+		<!-- 
+		     writeHost，负责写操作
+		     readHost，负责读操作
+		-->
+		<writeHost host="lumbasM1" url="lumbas:3306" user="root" password="lumbas#2015">
+			<readHost host="nuratorS1" url="nurator:3306" user="root" password="nurator#2015" />
+			<readHost host="pandoraS2" url="pandora:3306" user="root" password="pandora#2015" />
+		</writeHost>
+	</dataHost>
+</mycat:schema>

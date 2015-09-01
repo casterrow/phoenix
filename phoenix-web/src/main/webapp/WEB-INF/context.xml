@@ -5,6 +5,6 @@
 	<!-- 开发使用 -->	
 	<Resource name="jdbc/search" auth="Container" type="javax.sql.DataSource"
 		username="umcuser" password="umcuser" driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://localhost:3306/umcdb" maxActive="2" maxIdle="2" />
+		url="jdbc:mysql://nurator:3306/phoenix" maxActive="2" maxIdle="2" />
 		
 </Context>
